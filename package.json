@@ -1,0 +1,41 @@
+{
+  "name": "vapi-web-umd",
+  "version": "2.1.0",
+  "description": "UMD bundle for Vapi AI Web module",
+  "main": "dist/vapi-web-bundle-2.1.0.js",
+  "scripts": {
+    "build": "webpack",
+    "build:watch": "webpack --watch",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vapi",
+    "web",
+    "umd",
+    "bundle"
+  ],
+  "author": "Ali Farahat (Balacode.io) <ali@balacode.io>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/vapi-web-umd.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/vapi-web-umd/issues"
+  },
+  "homepage": "https://github.com/yourusername/vapi-web-umd#readme",
+  "devDependencies": {
+    "@babel/core": "^7.24.9",
+    "@babel/preset-env": "^7.24.8",
+    "@types/node": "^20.6.0",
+    "babel-loader": "^9.1.3",
+    "npm-check-updates": "^16.14.20",
+    "terser-webpack-plugin": "^5.3.10",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@vapi-ai/web": "^2.1.0"
+  }
+}
