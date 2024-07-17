@@ -2,54 +2,11 @@ name: Rebuild Bundles on Vapi Update
 
 on:
   schedule:
-    - cron: '0 * * * *' # Runs every hour
+    - cron: '0 0 * * *' # Runs once every 24 hours at midnight UTC
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
-  check-updates:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout your repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Check for updates in Vapi repository
-        run: |
-          git clone https://github.com/VapiAI/web.git
-          cd web
-          git fetch origin
-          git log -1 --format="%H" > ../vapi-latest-commit.txt
-          ls -la ..
-          cat ../vapi-latest-commit.txt
-
-      - name: Compare with last known commit
-        id: compare
-        run: |
-          echo "Latest commit in Vapi repository:"
-          cat ../vapi-latest-commit.txt
-          if [ -f ../vapi-last-known-commit.txt ]; then
-            echo "Last known commit:"
-            cat ../vapi-last-known-commit.txt
-            if cmp -s ../vapi-latest-commit.txt ../vapi-last-known-commit.txt; then
-              echo "Vapi repository has not been updated."
-              echo "::set-output name=updated::false"
-            else
-              echo "Vapi repository has been updated."
-              echo "::set-output name=updated::true"
-              cp ../vapi-latest-commit.txt ../vapi-last-known-commit.txt
-            fi
-          else
-            cp ../vapi-latest-commit.txt ../vapi-last-known-commit.txt
-            echo "First run, initializing commit tracking."
-            echo "::set-output name=updated::true"
-
-  build:
-    needs: check-updates
+  rebuild:
     runs-on: ubuntu-latest
 
     steps:
@@ -62,28 +19,23 @@ jobs:
           node-version: '20'
 
       - name: Install npm-check-updates
-        if: steps.compare.outputs.updated == 'true'
         run: npm install -g npm-check-updates
 
       - name: Update dependencies
-        if: steps.compare.outputs.updated == 'true'
-        run: ncu -u
+        run: ncu -u --target latest "@vapi-ai/web"
 
       - name: Install dependencies
-        if: steps.compare.outputs.updated == 'true'
         run: npm install
 
       - name: Run build script
-        if: steps.compare.outputs.updated == 'true'
         run: npm run build
 
       - name: Commit and push changes
-        if: steps.compare.outputs.updated == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add package.json package-lock.json
-          git commit -m 'Automated build: update dependencies and rebuild bundles based on Vapi repo changes'
+          git add package.json package-lock.json dist/
+          git commit -m 'Automated build: update dependencies and rebuild bundles'
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
