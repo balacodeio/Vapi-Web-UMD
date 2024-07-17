@@ -24,6 +24,8 @@ jobs:
           cd web
           git fetch origin
           git log -1 --format="%H" > ../vapi-latest-commit.txt
+          ls -la ..
+          cat ../vapi-latest-commit.txt
 
       - name: Compare with last known commit
         id: compare
