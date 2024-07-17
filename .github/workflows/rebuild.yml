@@ -30,11 +30,17 @@ jobs:
       - name: Run build script
         run: npm run build
 
+      - name: Check for changes
+        id: git_status
+        run: |
+          git add package.json package-lock.json dist/
+          git diff --cached --quiet || echo "::set-output name=changes::true"
+
       - name: Commit and push changes
+        if: steps.git_status.outputs.changes == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add package.json package-lock.json dist/
           git commit -m 'Automated build: update dependencies and rebuild bundles'
           git push
         env:
