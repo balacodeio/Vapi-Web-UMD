@@ -34,7 +34,7 @@ For development purposes, use the non-minified bundle:
 </head>
 <body>
     <h1>Check Console for Vapi Output</h1>
-    <script src="example.com/vapi-web-bundle-2.1.0.js"></script> <!-- Non-minified bundle -->
+    <script src="https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@2.1.0/dist/2.1.0/vapi-web-bundle-2.1.0.js"></script> <!-- Non-minified bundle -->
     <script>
         console.log(Vapi); // Now Vapi should be the Vapi class directly
         const vapi = new Vapi("your-api-key");
@@ -49,8 +49,16 @@ For development purposes, use the non-minified bundle:
 For production purposes, use the minified bundle:
 
 ```HTML
-<script src="example.com/vapi-web-bundle-2.1.0.min.js"></script> <!-- Minified bundle -->
+<script src="https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@2.1.0/dist/2.1.0/vapi-web-bundle-2.1.0.min.js"></script> <!-- Minified bundle -->
 ```
+
+You can also use the latest version available on jsDelivr:
+
+```HTML
+<script src="https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@latest/dist/latest/vapi-web-bundle.min.js"></script> <!-- Latest minified bundle -->
+
+```
+
 
 ## Development
 

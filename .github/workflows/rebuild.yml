@@ -34,21 +34,22 @@ jobs:
         id: git_status
         run: |
           git add package.json package-lock.json dist/
-          git diff --cached --quiet || echo "::set-output name=changes::true"
+          git diff --cached --quiet || echo "changes=true" >> $GITHUB_ENV
 
       - name: Get new version from @vapi-ai/web
-        if: steps.git_status.outputs.changes == 'true'
+        if: env.changes == 'true'
         id: get_version
-        run: echo "::set-output name=new_version::$(jq -r .dependencies["@vapi-ai/web"] package.json | tr -d '^')"
+        run: |
+          echo "new_version=$(jq -r .dependencies[\"@vapi-ai/web\"] package.json | tr -d '^')" >> $GITHUB_ENV
 
       - name: Update package.json version
-        if: steps.git_status.outputs.changes == 'true'
+        if: env.changes == 'true'
         run: |
-          npm version ${{ steps.get_version.outputs.new_version }} --no-git-tag-version
+          npm version ${{ env.new_version }} --no-git-tag-version
         id: update_version
 
       - name: Commit and push changes
-        if: steps.git_status.outputs.changes == 'true'
+        if: env.changes == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
@@ -58,9 +59,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create and push tag
-        if: steps.git_status.outputs.changes == 'true'
+        if: env.changes == 'true'
         run: |
-          git tag v${{ steps.get_version.outputs.new_version }}
-          git push origin v${{ steps.get_version.outputs.new_version }}
+          git tag v${{ env.new_version }}
+          git push origin v${{ env.new_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
