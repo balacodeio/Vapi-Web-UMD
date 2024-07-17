@@ -30,21 +30,21 @@ jobs:
         run: |
           echo "Latest commit in Vapi repository:"
           cat ../vapi-latest-commit.txt
-          if [ -f vapi-last-known-commit.txt ]; then
+          if [ -f ../vapi-last-known-commit.txt ]; then
             echo "Last known commit:"
-            cat vapi-last-known-commit.txt
-            if cmp -s vapi-latest-commit.txt vapi-last-known-commit.txt; then
+            cat ../vapi-last-known-commit.txt
+            if cmp -s ../vapi-latest-commit.txt ../vapi-last-known-commit.txt; then
               echo "Vapi repository has not been updated."
-              echo "updated=false" >> $GITHUB_ENV
+              echo "::set-output name=updated::false"
             else
               echo "Vapi repository has been updated."
-              echo "updated=true" >> $GITHUB_ENV
-              cp vapi-latest-commit.txt vapi-last-known-commit.txt
+              echo "::set-output name=updated::true"
+              cp ../vapi-latest-commit.txt ../vapi-last-known-commit.txt
             fi
           else
-            cp vapi-latest-commit.txt vapi-last-known-commit.txt
+            cp ../vapi-latest-commit.txt ../vapi-last-known-commit.txt
             echo "First run, initializing commit tracking."
-            echo "updated=true" >> $GITHUB_ENV
+            echo "::set-output name=updated::true"
 
   build:
     needs: check-updates
@@ -60,23 +60,23 @@ jobs:
           node-version: '20'
 
       - name: Install npm-check-updates
-        if: env.updated == 'true'
+        if: steps.compare.outputs.updated == 'true'
         run: npm install -g npm-check-updates
 
       - name: Update dependencies
-        if: env.updated == 'true'
+        if: steps.compare.outputs.updated == 'true'
         run: ncu -u
 
       - name: Install dependencies
-        if: env.updated == 'true'
+        if: steps.compare.outputs.updated == 'true'
         run: npm install
 
       - name: Run build script
-        if: env.updated == 'true'
+        if: steps.compare.outputs.updated == 'true'
         run: npm run build
 
       - name: Commit and push changes
-        if: env.updated == 'true'
+        if: steps.compare.outputs.updated == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
