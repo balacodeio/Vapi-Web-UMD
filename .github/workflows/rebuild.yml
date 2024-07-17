@@ -45,7 +45,6 @@ jobs:
   build:
     needs: check-updates
     runs-on: ubuntu-latest
-    if: ${{ env.updated == 'true' }}
 
     steps:
       - name: Checkout your repository
@@ -57,18 +56,23 @@ jobs:
           node-version: '20'
 
       - name: Install npm-check-updates
+        if: env.updated == 'true'
         run: npm install -g npm-check-updates
 
       - name: Update dependencies
+        if: env.updated == 'true'
         run: ncu -u
 
       - name: Install dependencies
+        if: env.updated == 'true'
         run: npm install
 
       - name: Run build script
+        if: env.updated == 'true'
         run: npm run build
 
       - name: Commit and push changes
+        if: env.updated == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
