@@ -4,7 +4,7 @@
   "description": "UMD bundle for Vapi AI Web module",
   "main": "dist/vapi-web-bundle-2.1.0.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && node post-build.js",
     "build:watch": "webpack --watch",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"

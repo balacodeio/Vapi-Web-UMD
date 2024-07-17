@@ -6,6 +6,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 const vapiPackagePath = path.resolve(__dirname, 'node_modules/@vapi-ai/web/package.json');
 const vapiPackage = JSON.parse(fs.readFileSync(vapiPackagePath, 'utf8'));
 
+const version = vapiPackage.version;
+const outputDirectory = `dist/${version}`;
+
 const commonConfig = {
   entry: './src/index.js',
   module: {
@@ -28,8 +31,8 @@ const nonMinifiedConfig = {
   ...commonConfig,
   mode: 'development',
   output: {
-    filename: `vapi-web-bundle-${vapiPackage.version}.js`,
-    path: path.resolve(__dirname, `dist/${vapiPackage.version}`),
+    filename: `vapi-web-bundle-${version}.js`,
+    path: path.resolve(__dirname, outputDirectory),
     library: 'Vapi',
     libraryTarget: 'umd',
     globalObject: 'this',
@@ -41,8 +44,8 @@ const minifiedConfig = {
   ...commonConfig,
   mode: 'production',
   output: {
-    filename: `vapi-web-bundle-${vapiPackage.version}.min.js`,
-    path: path.resolve(__dirname, `dist/${vapiPackage.version}`),
+    filename: `vapi-web-bundle-${version}.min.js`,
+    path: path.resolve(__dirname, outputDirectory),
     library: 'Vapi',
     libraryTarget: 'umd',
     globalObject: 'this',
