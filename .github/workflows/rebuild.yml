@@ -41,12 +41,11 @@ jobs:
             cp vapi-latest-commit.txt vapi-last-known-commit.txt
             echo "First run, initializing commit tracking."
             echo "updated=true" >> $GITHUB_ENV
-          fi
 
   build:
     needs: check-updates
     runs-on: ubuntu-latest
-    if: env.updated == 'true'
+    if: ${{ env.updated == 'true' }}
 
     steps:
       - name: Checkout your repository
