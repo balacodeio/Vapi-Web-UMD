@@ -36,6 +36,17 @@ jobs:
           git add package.json package-lock.json dist/
           git diff --cached --quiet || echo "::set-output name=changes::true"
 
+      - name: Get new version from @vapi-ai/web
+        if: steps.git_status.outputs.changes == 'true'
+        id: get_version
+        run: echo "::set-output name=new_version::$(jq -r .dependencies["@vapi-ai/web"] package.json | tr -d '^')"
+
+      - name: Update package.json version
+        if: steps.git_status.outputs.changes == 'true'
+        run: |
+          npm version ${{ steps.get_version.outputs.new_version }} --no-git-tag-version
+        id: update_version
+
       - name: Commit and push changes
         if: steps.git_status.outputs.changes == 'true'
         run: |
@@ -43,5 +54,13 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -m 'Automated build: update dependencies and rebuild bundles'
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create and push tag
+        if: steps.git_status.outputs.changes == 'true'
+        run: |
+          git tag v${{ steps.get_version.outputs.new_version }}
+          git push origin v${{ steps.get_version.outputs.new_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
