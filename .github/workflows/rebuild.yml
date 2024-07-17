@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout your repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -28,7 +28,11 @@ jobs:
       - name: Compare with last known commit
         id: compare
         run: |
+          echo "Latest commit in Vapi repository:"
+          cat ../vapi-latest-commit.txt
           if [ -f vapi-last-known-commit.txt ]; then
+            echo "Last known commit:"
+            cat vapi-last-known-commit.txt
             if cmp -s vapi-latest-commit.txt vapi-last-known-commit.txt; then
               echo "Vapi repository has not been updated."
               echo "updated=false" >> $GITHUB_ENV
@@ -48,7 +52,7 @@ jobs:
 
     steps:
       - name: Checkout your repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
