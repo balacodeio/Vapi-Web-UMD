@@ -14,13 +14,9 @@ Install the package using npm:
 npm install vapi-web-umd
 ```
 
-# Usage
-
-Including the Bundle in HTML
+## Usage
 
 You can include the bundle in your HTML file to use the Vapi class directly.
-
-## Non-Minified Bundle
 
 For development purposes, use the non-minified bundle:
 
@@ -34,7 +30,7 @@ For development purposes, use the non-minified bundle:
 </head>
 <body>
     <h1>Check Console for Vapi Output</h1>
-    <script src="https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@latest/dist/latest/vapi-web-bundle.js"></script> <!-- Non-minified bundle -->
+    <script src="https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@latest/dist/latest/vapi-web-bundle.min.js"></script> <!-- Non-minified bundle -->
     <script>
         console.log(Vapi); // Now Vapi should be the Vapi class directly
         const vapi = new Vapi("your-api-key");
@@ -44,33 +40,14 @@ For development purposes, use the non-minified bundle:
 </html>
 ```
 
-## Minified Bundle
+From here continue to follow the instructions as available in the Vapi.ai Web Doc site
 
-For production purposes, use the minified bundle:
+### Specific version
+
+If you would like to use a specific version then indicate it in the URL:
 
 ```HTML
 <script src="https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@2.1.0/dist/2.1.0/vapi-web-bundle-2.1.0.min.js"></script> <!-- Minified bundle -->
-```
-
-or you can also use the latest version available on jsDelivr:
-
-```HTML
-<script src="https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@latest/dist/latest/vapi-web-bundle.min.js"></script> <!-- Latest minified bundle -->
-```
-
-
-## Development
-
-To build the project, run:
-
-```bash
-npm run build
-```
-
-To watch for changes and rebuild automatically, run:
-
-```bash
-npm run build:watch
 ```
 
 ## Contributing
