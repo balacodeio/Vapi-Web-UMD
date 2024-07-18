@@ -32,7 +32,7 @@ For development purposes, use the non-minified bundle:
 </html>
 ```
 
-From here continue to follow the instructions as available in the Vapi.ai Web Doc site
+From here continue to follow the instructions as available in the Vapi.ai Web Doc site https://docs.vapi.ai/sdk/web
 
 ### Specific version
 
