@@ -6,14 +6,6 @@ UMD bundle for Vapi AI Web module.
 
 This project provides a UMD (Universal Module Definition) bundle for the Vapi AI Web module, allowing it to be easily included in both browser environments and other module systems.
 
-## Installation
-
-Install the package using npm:
-
-```bash
-npm install vapi-web-umd
-```
-
 ## Usage
 
 You can include the bundle in your HTML file to use the Vapi class directly.
