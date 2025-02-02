@@ -37,6 +37,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@vapi-ai/web": "^2.2.0"
+    "@vapi-ai/web": "^2.2.1"
   }
 }
